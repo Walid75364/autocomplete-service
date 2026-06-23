@@ -1,0 +1,140 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Variables d'environnement
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Installation des dépendances
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copie du code source
+COPY . .
+
+# Création du répertoire data (sera monté en volume ou copié)
+RUN mkdir -p data
+
+# Le dictionnaire doit être importé avant le démarrage
+# ou monté en volume au runtime
+# RUN python scripts/import_eff.py --source data/eff_large_wordlist.txt --target data/dictionary.txt
+
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+ ----------------------------------------------------
+PROCEDURE COMPLETE : 
+# ÉTAPE 1 : Vérifier que Docker est installé
+powershell
+docker --version
+Si tu obtiens une erreur ("commande introuvable"), Docker n'est pas installé.
+
+# ÉTAPE 2 : Installer Docker (si pas installé)
+## Option A : Docker Desktop (recommandé pour Windows)
+Télécharge : https://www.docker.com/products/docker-desktop
+Installe l'exécutable
+Redémarrer le PC
+Lancer Docker Desktop depuis le menu Démarrer
+Attendre que le moteur Docker démarre (icône verte en bas à droite)
+## Option B : Docker Engine en ligne de commande (plus léger)
+powershell
+# Via Chocolatey (si installé)
+choco install docker-desktop
+# Ou via Winget
+winget install Docker.DockerDesktop
+
+# ÉTAPE 3 : Vérifier que Docker fonctionne
+Une fois Docker Desktop lancé :
+powershell
+docker --version
+# Doit afficher : Docker version 24.x.x ou supérieur
+
+docker run hello-world
+# Doit télécharger et exécuter un conteneur de test
+
+# ÉTAPE 4 : Créer le Dockerfile au bon endroit
+S'asurer que le fichier Dockerfile (sans extension) est à la racine de du projet :
+
+C:\Users\walid\autocomplete-service\
+├── Dockerfile          ← ici
+├── requirements.txt    ← ici
+├── README.md           ← ici
+├── app\                ← ici
+├── tests\              ← ici
+├── scripts\            ← ici
+└── data\               ← ici
+Contenu du fichier Dockerfile (écrit plus haut) :
+dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+RUN mkdir -p data
+
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# ÉTAPE 5 : Construire l'image Docker
+Depuis le répertoire racine du projet :
+powershell
+cd C:\Users\walid\autocomplete-service
+docker build -t autocomplete .
+Explication des commandes :
+docker build : construit une image à partir d'un Dockerfile
+-t autocomplete : tag (nom) de l'image
+. : répertoire courant (où se trouve le Dockerfile)
+
+# ÉTAPE 6 : Lancer le conteneur
+powershell
+docker run -p 8000:8000 autocomplete
+Explication :
+docker run : démarre un conteneur
+-p 8000:8000 : mappe le port 8000 du conteneur vers le port 8000 de ta machine
+autocomplete : nom de l'image créée à l'étape 5
+
+# ÉTAPE 7 : Tester
+Dans un autre terminal (PowerShell) :
+powershell
+curl "http://localhost:8000/autocomplete?query=crypt"
+Ou avec un navigateur : http://localhost:8000/autocomplete?query=crypt
+⚠️ Problème : le dictionnaire dans Docker
+Le conteneur a besoin du fichier data/dictionary.txt. 
+Deux options :
+-> Option A : Copier le dictionnaire dans l'image (plus simple)
+Ajoute cette ligne dans le Dockerfile avant le CMD :
+dockerfile
+COPY data/dictionary.txt data/dictionary.txt
+Puis reconstruis :
+powershell
+docker build -t autocomplete .
+-> Option B : Monter le dossier data en volume (plus flexible)
+powershell
+docker run -p 8000:8000 -v ${PWD}/data:/app/data autocomplete
+
+📋 Récap des commandes
+powershell
+# 1. Vérifier Docker
+docker --version
+
+# 2. Aller dans le projet
+cd C:\Users\walid\autocomplete-service
+
+# 3. Construire l'image
+docker build -t autocomplete .
+
+# 4. Lancer le conteneur
+docker run -p 8000:8000 autocomplete
+
+# 5. Tester (dans un autre terminal)
+curl "http://localhost:8000/autocomplete?query=crypt"
