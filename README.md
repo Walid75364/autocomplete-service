@@ -4,6 +4,9 @@ Service web d'auto-complétion type Google Suggest, implémenté en Python avec 
 
 ## Fonctionnalités
 
+<img width="1329" height="238" alt="image" src="https://github.com/user-attachments/assets/c9a99d4c-7abf-4096-b8d1-a10a8ddbd778" />
+
+
 - API REST `GET /autocomplete?query=&lt;prefix&gt;`
 - Retourne une liste JSON de max 4 mots triés alphabétiquement
 - Insensible à la casse
