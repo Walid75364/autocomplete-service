@@ -63,11 +63,14 @@ python scripts/import_eff.py --source data/eff_large_wordlist.txt --target data/
 uvicorn app.main:app --reload
 
 # 6. Tester
-curl "http://localhost:8000/autocomplete?query=crypt"
+-> curl "http://localhost:8000/autocomplete?query=crypt"
+-> curl "http://localhost:8000/autocomplete?query=a"
+# Doit retourner 4 mots commençant par "a"
+-> Swagger UI : http://localhost:8000/docs
 
 Tests
 pytest tests/ -v
-Résultat attendu : 20 tests passed, 0 failed.
+Résultat attendu : 26 tests passed, 0 failed.
 
 Docker
 voir fichier Dockerfile
