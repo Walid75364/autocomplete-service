@@ -13,25 +13,8 @@ Service web d'auto-complétion type Google Suggest, implémenté en Python avec 
 - Supporte n'importe quel dictionnaire EFF (détection auto du format)
 
 ## Architecture
-app/
-├── __init__.py
-├── trie.py              # Structure de données Trie (arbre de préfixes)
-├── loader.py            # Chargement du dictionnaire depuis fichier texte
-├── service.py           # Logique métier (validation, limite configurable)
-└── main.py              # API FastAPI + lifespan
 
-tests/
-├── __init__.py
-├── test_api.py          # Tests d'intégration de l'API
-├── test_autocomplete.py # Tests unitaires fonctionnels (100% génériques)
-└── test_eff_dataset.py  # Tests de performance avec le dataset EFF
-
-scripts/
-└── import_eff.py        # Import générique des dictionnaires EFF
-
-data/
-├── dictionary.txt       # Dictionnaire actif (généré)
-└── *.txt                # Sources EFF (à télécharger)
+<img width="590" height="365" alt="image" src="https://github.com/user-attachments/assets/20bbe060-6980-430c-aa33-b9772a5fa275" />
 
 
 ## Choix de conception
