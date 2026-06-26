@@ -55,7 +55,7 @@ docker run hello-world
 # Doit télécharger et exécuter un conteneur de test
 
 # ÉTAPE 4 : Créer le Dockerfile au bon endroit
-S'asurer que le fichier Dockerfile (sans extension) est à la racine de du projet :
+S'assurer que le fichier Dockerfile (sans extension) est à la racine de du projet :
 
 C:\Users\walid\autocomplete-service\
 ├── Dockerfile          ← ici
@@ -88,7 +88,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 # ÉTAPE 5 : Construire l'image Docker
 Depuis le répertoire racine du projet :
 powershell
-cd C:\Users\walid\autocomplete-service
+cd C:\Users\dossier_contenant_le_projet\autocomplete-service
 docker build -t autocomplete .
 Explication des commandes :
 docker build : construit une image à partir d'un Dockerfile
@@ -128,7 +128,7 @@ powershell
 docker --version
 
 # 2. Aller dans le projet
-cd C:\Users\walid\autocomplete-service
+cd C:\Users\dossier_contenant_le_projet\autocomplete-service
 
 # 3. Construire l'image
 docker build -t autocomplete .
